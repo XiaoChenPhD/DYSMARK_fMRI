@@ -9,6 +9,10 @@
 % into the folders named "fmap" under each subject's directory of the
 % "BIDS" folder.
 %
+% NOTE: the older version of dcm2niix may not be able to generate two .nii
+% files due to a known issue:
+% https://neurostars.org/t/ge-direct-fieldmaps-how-to-debug-pe-direction/22959/3
+%
 % Xiao Chen
 % 240528
 % chenxiaophd@gmail.com
@@ -58,6 +62,7 @@ for k = 1:length(jsonFiles)
     elseif strcmp(data.PhaseEncodingDirection, "j-")
         dir_label = 'PA';
     end
+
     % copy .json file
     BIDS_name = ['sub-', subj_ID, '_dir-', dir_label, '_epi'];
     source = filePath;
@@ -69,3 +74,7 @@ for k = 1:length(jsonFiles)
     destination = [fmap_dir, filesep, BIDS_name, '.nii'];
     copyfile(source, destination);
 end
+
+%% added the field "intenedfor"
+for k = 1:length(jsonFiles)
+    JSON=spm_jsonread(

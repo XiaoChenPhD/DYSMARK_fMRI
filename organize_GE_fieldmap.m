@@ -62,7 +62,7 @@ for k = 1:length(jsonFiles)
     elseif strcmp(data.PhaseEncodingDirection, "j-")
         dir_label = 'PA';
     end
-    
+
     % copy .json file
     BIDS_name = ['sub-', subj_ID, '_dir-', dir_label, '_epi'];
     source = filePath;
@@ -74,3 +74,18 @@ for k = 1:length(jsonFiles)
     destination = [fmap_dir, filesep, BIDS_name, '.nii'];
     copyfile(source, destination);
 end
+
+%% added the field "intenedfor"
+dir_label = 'AP';
+BIDS_name = ['sub-', subj_ID, '_dir-', dir_label, '_epi'];
+destination = [fmap_dir, filesep, BIDS_name, '.json'];
+JSON=spm_jsonread(destination);
+JSON.IntendedFor= 'func/sub-Pilot001_task-rest_bold.nii';
+spm_jsonwrite(destination,JSON);
+
+dir_label = 'PA';
+BIDS_name = ['sub-', subj_ID, '_dir-', dir_label, '_epi'];
+destination = [fmap_dir, filesep, BIDS_name, '.json'];
+JSON=spm_jsonread(destination);
+JSON.IntendedFor= 'func/sub-Pilot001_task-rest_bold.nii';
+spm_jsonwrite(destination,JSON);
